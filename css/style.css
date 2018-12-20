@@ -1,0 +1,98 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    overflow-y: scroll;
+}
+h1, h2, h3, h4, h5, h6{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+#app{
+    padding: 20px 5px 10px 5px;
+}
+#titlePage{
+    font-weight: bold;
+}
+.form-inline{
+    display: inline-block;
+}
+#app .row:first-child {
+    margin-bottom: 10px;
+}
+.table thead tr th{
+    font-size: 15px;
+    text-align: center;
+    border: 0;
+    font-weight: 700;
+}
+.table thead tr th span{
+    display: inline-block;
+    padding-top: 5px;
+}
+#advertsList .table thead tr:first-child, #modalShowAdvert .table thead tr:first-child{
+    background-color: #C5C5C5;
+}
+#modalShowAdvert .table thead tr:first-child{
+    background-color: #337A55;
+    color: #FFF;
+}
+#modalShowAdvert .table thead tr:first-child span{
+    font-size: 20px !important;
+}
+.table thead tr:first-child h3{
+    font-weight: normal;
+    color: #555;
+}
+#advertsList .table thead tr:last-child{
+    background-color: #176a71;
+    color: #FFFFFF;
+}
+#details select{
+    display: none;
+}
+#details #submitEditAdvert{
+    display: none;
+}
+#details tr td:first-child{
+    font-weight: bold;
+}
+#advertsList .table tbody tr td{
+    font-size: 14px;
+    text-align: center;
+}
+#advertDetail .table thead tr:last-child{
+    background-color: #16a085;
+    color: #FFFFFF;
+    border-bottom: 0;
+}
+#advertDetail .table tbody tr td:first-child{
+    font-size: 14px;
+    font-weight: bold;
+}
+#advertDetail .table tbody tr td:last-child{
+    font-size: 15px;
+    text-align: left;
+}
+h2 i.glyphicon{
+    font-size: 20px;
+}
+i.glyphicon{
+    font-size: 12px;
+}
+tr td .btn{
+    padding: 2px 6px;
+}
+#modalNewAdvert .btn-success{
+    width: 100%;
+}
+#advertName{
+    font-weight: bold;
+}
+#submitEditAdvert{
+    padding: 6px 12px !important;
+    width: 100%;
+}
+.lab{
+    font-size: 90%;
+}
