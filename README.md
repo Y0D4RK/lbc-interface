@@ -13,4 +13,4 @@
 
 Open browser and go to [localhost](http://localhost:9000)
 
->> Don't forget user fixture in symfony api [HERE](http://localhost:8000/api/doc)
+>> Don't forget user fixture in symfony api [HERE](https://github.com/Y0D4RK/lbc)
