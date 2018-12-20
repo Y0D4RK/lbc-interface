@@ -32,8 +32,7 @@ $(document).ready(function(){
             error: function(error){
                 // console.log("** Login > Get JWT error ! **");
                 // console.log(error);
-                var e = JSON.parse(error);
-                $('#loginError').empty().attr('class', 'alert alert-danger').append('<strong>Error ! '+ e +'.</strong>');
+                $('#loginError').empty().attr('class', 'alert alert-danger').append('<strong>Erreur d\'authentification !</strong>');
 
             }
         });
@@ -250,16 +249,18 @@ $(document).ready(function(){
                 },
                 success: function(response){
                     // console.log('** Advert updated ! **');
-                    $('#details').empty().append("<tr><td colspan='2'><p class='alert alert-success text-center'><strong>Updated ! </strong></p></td></tr>");
+                    $('#details').empty().append("<tr><td colspan='2'><p class='alert alert-success text-center'><strong>Modification accepté ! </strong></p></td></tr>");
                     setTimeout(function(){
                         location.reload();
-                    }, 2000);
+                    }, 1500);
                 },
                 error: function(error){
                     // console.log('** Advert not updated ! **');
-                    console.log(error);
-                    var e = JSON.parse(error);
-                    $('#details').empty().append("<tr><td colspan='2'><p class='alert alert-danger text-center'><strong>Error ! </strong>"+e+"</p></td></tr>");
+                    // console.log(error);
+                    $('#details').empty().append("<tr><td colspan='2'><p class='alert alert-danger text-center'><strong>Erreur lors de la modification !</strong></p></td></tr>");
+                    setTimeout(function(){
+                        location.reload();
+                    }, 1500);
                 }
             })
         });
@@ -291,13 +292,13 @@ $(document).ready(function(){
                         "<div id='loginError'></div>"+
                         "<form id='loginForm' action='' method='post' class='form-horizontal'>"+
                             "<div class='form-group'>"+
-                                "<label for='username' class='col-sm-2 col-sm-offset-2 control-label'> Username </label>"+
+                                "<label for='username' class='col-sm-4 col-sm-offset-1 control-label'> Username / Email </label>"+
                                 "<div class='col-sm-4'>"+
                                     "<input type='text' name='username' placeholder='Username' value='john_doe@mail.com' class='form-control' id='username'>"+
                                 "</div>"+
                             "</div>"+
                             "<div class='form-group'>"+
-                                "<label for='password' class='col-sm-2 col-sm-offset-2 control-label'> Mot de passe </label>"+
+                                "<label for='password' class='col-sm-4 col-sm-offset-1 control-label'> Mot de passe </label>"+
                                 "<div class='col-sm-4'>"+
                                     "<input type='password' name='password' placeholder='Mot de passe' value='11235' class='form-control' id='password'>"+
                                 "</div>"+
