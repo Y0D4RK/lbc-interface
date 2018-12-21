@@ -66,18 +66,23 @@ $(document).ready(function(){
                 var categories = ihm['admin']['categories'] = response.categories;
 
                 for(var j = 0; j < categories.length; j++){
-                    ihm['admin']['categories'][j] = "<option value='"+j+"'>"+categories[j].label+"</option>";
+                    ihm['admin']['categories'][j] = "<option value='"+categories[j].id+"'>"+categories[j].label+"</option>";
                 }
-                $('.category-select').html(ihm['admin']['categories']);
+
+                console.log(ihm['admin']['categories']);
 
                 var token = localStorage.getItem('token');
 
+                $('.category-select').html(ihm['admin']['categories']);
+
                 for(var i = 0; i < adverts.length; i++){
+                    // console.log(adverts[i]);
                     $('#advertsTable').append(
                         "<tr>" +
                             "<td>"+adverts[i].id+"</td>" +
                             "<td>"+adverts[i].uuid+"</td>" +
-                            "<td>"+adverts[i].category+"</td>" +
+                            "<td>"+adverts[i].category.label+"</td>" +
+                            "<td>"+adverts[i].category.fields+"</td>" +
                             "<td>"+adverts[i].title+"</td>" +
                             "<td>"+adverts[i].description+"</td>" +
                             "<td><button class='btnAdvertDetail btn btn-primary' data-uuid='"+adverts[i].uuid+"'  data-toggle='modal' data-target='#modalShowAdvert'><i class='glyphicon glyphicon-eye-open'></i></button></td>" +
@@ -157,12 +162,6 @@ $(document).ready(function(){
                 // console.log("** Success, this advert found ! **");
                 // console.log(response.advert);
                 var advert = response.advert;
-                // var categories = response.categories;
-                // console.log(categories);
-                //
-                // for(var j = 0; j < categories.length; j++){
-                //     $(".category-select").append("<option value='"+j+"'>"+categories[j].label+"</option>");
-                // }
 
                 ihm['admin']['advert'] =
                     "<table class='table table-striped'>"+
@@ -184,8 +183,7 @@ $(document).ready(function(){
                             "<tr>"+
                                 "<td>Category</td><td>" +
                                     "<select name='category' class='form-control category-select' required>" +
-                                        "<option selected disabled> -- choisir -- </option>" +
-                                    "</select><span class='lab'>"+advert.category+"</span>" +
+                                    "</select><span class='lab'>"+advert.category.label+"</span>" +
                                 "</td>"+
                             "</tr>"+
                             "<tr>"+
@@ -363,6 +361,7 @@ $(document).ready(function(){
                                                 "<th>Id</th>"+
                                                 "<th>Uuid</th>"+
                                                 "<th>Category</th>"+
+                                                "<th>Fields</th>"+
                                                 "<th>Title</th>"+
                                                 "<th>Description</th>"+
                                                 "<th>Visualiser</th>"+
@@ -417,7 +416,6 @@ $(document).ready(function(){
                                                         "<label class='control-label col-sm-4'>Category</label>" +
                                                         "<div class='col-sm-8'>"+
                                                             "<select name='category' class='form-control category-select' required>" +
-                                                                "<option selected disabled> -- choisir -- </option>" +
                                                             "</select>" +
                                                         "</div>"+
                                                     "</div>"+
