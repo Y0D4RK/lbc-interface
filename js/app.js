@@ -7,6 +7,8 @@ $(document).ready(function(){
         prod: ''
     };
 
+    var userAccess = false;
+
     var ihm = {
         login: '',
         admin: {}
@@ -60,10 +62,17 @@ $(document).ready(function(){
                 // console.log("*******************************");
                 // console.log("** Success, adverts found ! **");
                 // console.log("*******************************");
-                adverts = response.adverts;
+                var adverts = response.adverts;
+                var categories = ihm['admin']['categories'] = response.categories;
+
+                for(var j = 0; j < categories.length; j++){
+                    ihm['admin']['categories'][j] = "<option value='"+j+"'>"+categories[j].label+"</option>";
+                }
+                $('.category-select').html(ihm['admin']['categories']);
+
                 var token = localStorage.getItem('token');
+
                 for(var i = 0; i < adverts.length; i++){
-                    console.log(adverts[i]);
                     $('#advertsTable').append(
                         "<tr>" +
                             "<td>"+adverts[i].id+"</td>" +
@@ -84,7 +93,7 @@ $(document).ready(function(){
                 $(".btnAdvertRemove").click(function(){
                     var aggree = confirm('Es-tu sur de vouloir supprimer cet élement ?');
                     if(aggree){
-                        console.log($(this).data('uuid'));
+                        // console.log($(this).data('uuid'));
                         removeAdvert(token, $(this).data('uuid'));
                     }else{
                         return false;
@@ -96,7 +105,7 @@ $(document).ready(function(){
                 });
             },
             error: function(error){
-                console.log("** Error, adverts NOT found ! **");
+                // console.log("** Error, adverts NOT found ! **");
                 if(error.status === 403){
                     $('#errors').empty().attr('class', 'alert alert-danger').append('<strong>Vos accès ont expirés ! Veuillez vous reconnecter...</strong>');
                     setTimeout(function(){
@@ -118,13 +127,18 @@ $(document).ready(function(){
                 }
             },
             success: function(response){
-                console.log('** Delete > Success, advert removed ! **');
-                console.log(response);
+                // console.log('** Delete > Success, advert removed ! **');
+                // console.log(response);
                 location.reload();
             },
             error: function(error){
-                console.log("** Delete > Error, advert not deleted ! **");
-                console.log(error);
+                // console.log("** Delete > Error, advert not deleted ! **");
+                // console.log(error);
+
+                $('#details').empty().append("<tr><td colspan='2'><p class='alert alert-danger text-center'><strong>Erreur lors de la modification !</strong></p></td></tr>");
+                setTimeout(function(){
+                    location.reload();
+                }, 1500);
             }
         });
     }
@@ -140,14 +154,23 @@ $(document).ready(function(){
                 }
             },
             success: function(response){
-                console.log("** Success, this advert found ! **");
-                console.log(response.advert);
+                // console.log("** Success, this advert found ! **");
+                // console.log(response.advert);
                 var advert = response.advert;
+                // var categories = response.categories;
+                // console.log(categories);
+                //
+                // for(var j = 0; j < categories.length; j++){
+                //     $(".category-select").append("<option value='"+j+"'>"+categories[j].label+"</option>");
+                // }
+
                 ihm['admin']['advert'] =
                     "<table class='table table-striped'>"+
                         "<thead>"+
                             "<tr>"+
-                                "<th colspan='2'><span>"+advert.title+"</span><button id='btnEditAdvert' class='btn btn-warning pull-right'>Modifier</button></th>"+
+                                "<th colspan='2'><span>"+advert.title+"</span>" +
+                                    "<button id='btnEditAdvert' class='btn btn-warning pull-right'>Modifier</button>" +
+                                "</th>"+
                             "</tr>"+
                         "</thead>"+
                         "<form class='form-horizontal' id='editAdvert'>"+
@@ -159,7 +182,11 @@ $(document).ready(function(){
                                 "<td>Uuid</td><td>"+advert.uuid+"</td>"+
                             "</tr>"+
                             "<tr>"+
-                                "<td>Category</td><td><select name='category' class='form-control' required><option selected disabled> -- choisir -- </option><option value='1'>Cat_1</option><option value='2'>Cat_2</option><option value='3'>Cat_3</option></select><span class='lab'>"+advert.category+"</span></td>"+
+                                "<td>Category</td><td>" +
+                                    "<select name='category' class='form-control category-select' required>" +
+                                        "<option selected disabled> -- choisir -- </option>" +
+                                    "</select><span class='lab'>"+advert.category+"</span>" +
+                                "</td>"+
                             "</tr>"+
                             "<tr>"+
                                 "<td>Title</td><td><input type='hidden' class='form-control' name='title' value='"+advert.title+"'><span>"+advert.title+"</span></td>"+
@@ -205,17 +232,17 @@ $(document).ready(function(){
                 }
             },
             success: function(response){
-                console.log('** Success, new advert created ! **');
-                $('#modalNewAdvert').find('.modal-body').empty().append("<p class='alert alert-success text-center'><strong>Success ! New advert created.</strong></p>");
+                // console.log('** Success, new advert created ! **');
+                $('#modalNewAdvert').find('.modal-body').empty().append("<p class='alert alert-success text-center'><strong>Succès ! Nouvelle annonce créée.</strong></p>");
 
                 setTimeout(function(){
                     location.reload();
                 }, 1500);
             },
             error: function(error){
-                console.log('** Error, new advert NOT created ! **');
-                console.log(error);
-                $('#modalNewAdvert').find('.modal-body').empty().append("<p class='alert alert-danger text-center'><strong>Error ! New advert not created.</strong></p>");
+                // console.log('** Error, new advert NOT created ! **');
+                // console.log(error);
+                $('#modalNewAdvert').find('.modal-body').empty().append("<p class='alert alert-danger text-center'><strong>Erreur ! Nouvelle annonce non créée.</strong></p>");
 
                 setTimeout(function(){
                     location.reload();
@@ -225,7 +252,7 @@ $(document).ready(function(){
     }
 
     function editAdvert(token, uuid) {
-        console.log('** Edit advert ! **');
+        // console.log('** Edit advert ! **');
 
         $('#details').find('tr td:last-child :input').each(function(){
             $(this).next('span').empty();
@@ -233,16 +260,17 @@ $(document).ready(function(){
             if($(this).css('display', 'none')){
                 $(this).css('display', 'inline-block');
             }
+            $('.category-select').html(ihm['admin']['categories']);
         });
         $('#submitEditAdvert').click(function(){
             var formData = $('#advertDetailInfo').find(':input').serializeJSON();
-            console.log(formData);
+            // console.log(formData);
             $.ajax({
                 url: 'http://'+domainName['local']+'/api/advert/'+uuid,
                 type: 'PUT',
                 data: formData,
                 beforeSend: function(xhr) {
-                    console.log('** Pre-flight request **');
+                    // console.log('** Pre-flight request **');
                     if (token) {
                         xhr.setRequestHeader('Authorization', 'Bearer '+token);
                     }
@@ -265,9 +293,6 @@ $(document).ready(function(){
             })
         });
     }
-
-    // LOCAL STORAGE ENGINE - USER ACCESS
-    var userAccess = false;
 
     if(localStorage.getItem('token') && localStorage.getItem('token') !== 'undefined'){
         console.log('*******************************************************');
@@ -391,7 +416,9 @@ $(document).ready(function(){
                                                     "<div class='form-group'>"+
                                                         "<label class='control-label col-sm-4'>Category</label>" +
                                                         "<div class='col-sm-8'>"+
-                                                            "<select name='category' class='form-control' required><option selected disabled> -- choisir -- </option><option value='1'>Cat_1</option><option value='2'>Cat_2</option><option value='3'>Cat_3</option></select>"+
+                                                            "<select name='category' class='form-control category-select' required>" +
+                                                                "<option selected disabled> -- choisir -- </option>" +
+                                                            "</select>" +
                                                         "</div>"+
                                                     "</div>"+
                                                     "<div class='form-group'>"+
